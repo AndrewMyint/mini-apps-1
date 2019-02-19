@@ -1,2 +1,61 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+  <title> tic tac toe </title>
 
+  <style>
+    h1 {
+      color: blueviolet;
+    }
+
+    .container {
+      padding: 10px;
+      width: 30%;
+      margin: 0 auto;
+    }
+
+    .square {
+      width: 30%;
+      height: 100px;
+
+    }
+
+    .col2 {
+      border-left: 2px solid black;
+      border-right: 2px solid black;
+
+    }
+    .row1{
+      border-bottom: 2px solid black;
+    }
+    .row2 {
+      border-bottom: 2px solid black;
+    }
+
+  </style>
+</head>
+
+<body>
+  <h1>Hello html</h1>
+  <table class="container">
+    <tr>
+      <td class="square row1 col1">H</td>
+      <td class="square row1 col2">H</td>
+      <td class="square row1 col3">H</td>
+    </tr>
+    <tr>
+      <td class="square row2 col1"></td>
+      <td class="square row2 col2"></td>
+      <td class="square row2 col3"></td>
+    </tr>
+    <tr>
+      <td class="square row3 col1"></td>
+      <td class="square row3 col2"></td>
+      <td class="square row3 col3"></td>
+    </tr>
+  </table>
+  <button class ="btn1" >Hello</button>
+</body>
+<script src="app.js"></script>
+</html>
