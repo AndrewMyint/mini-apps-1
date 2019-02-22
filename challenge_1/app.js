@@ -1,11 +1,16 @@
 console.log('Hello app.js');
-window.player = {
-      name: 'player1',
-      turn: 'O'
-};
-window.square = [];
-for (var i = 0; i < 9; i++) {
-      window.square[i] = '-';
+var initializePlayer = () => {
+      window.player = {
+            name: 'player1',
+            turn: 'O'
+      };
+}
+
+var initializeSquare = () => {
+      window.square = [];
+      for (var i = 0; i < 9; i++) {
+            window.square[i] = '-';
+      }
 }
 
 // toggle the playerTurn and set text 'X' or 'O'
@@ -20,8 +25,7 @@ const toggleTurn = () => {
       return window.player.turn;
 }
 
-var td = document.querySelectorAll("td");
-// create Event listener for each 'td'
+
 var check_X = (array) => {
       var bol = true;
       array.forEach((value) => {
@@ -59,9 +63,9 @@ var rowWin = () => {
 }
 
 var colWin = () => {
-      var col1 = window.square.filter((value, index)=> {return index % 3 === 0});
-      var col2 = window.square.filter((value, index) => {return index % 3 === 1});
-      var col3 = window.square.filter((value, index) => {return index % 3 === 2});
+      var col1 = window.square.filter((value, index) => { return index % 3 === 0 });
+      var col2 = window.square.filter((value, index) => { return index % 3 === 1 });
+      var col3 = window.square.filter((value, index) => { return index % 3 === 2 });
 
       if (check_O(col1) || check_X(col1)) {
             return true;
@@ -74,7 +78,7 @@ var colWin = () => {
 }
 
 var diagonalWin = () => {
-      var d1 = window.square.filter((value, index) => {return index % 4 === 0});
+      var d1 = window.square.filter((value, index) => { return index % 4 === 0 });
       var d2 = window.square.filter((value, index) => {
             if (index !== 0 && index !== 8) {
                   return index % 2 === 0;
@@ -99,7 +103,10 @@ var checkWin = () => {
       }
       return false;
 }
-
+var td = document.querySelectorAll("td");
+// create Event listener for each 'td'
+initializePlayer();
+initializeSquare();
 td.forEach((td, index) => {
       td.clickOnce = true;
       td.addEventListener('click', () => {
@@ -119,7 +126,19 @@ td.forEach((td, index) => {
             }
       })
 })
+var cleanBoard = () => {
+      td.forEach((td, index) => {
+            td.clickOnce = true;
+            td.textContent = '';
+      });
+}
+var btn = document.getElementsByClassName('reset');
 
+btn[0].addEventListener('click', () => {
+      initializePlayer();
+      initializeSquare();
+      cleanBoard();
+});
 // TODO
 // reset button needed
 // freeze the program if winner has occured
