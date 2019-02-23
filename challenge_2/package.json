@@ -1,0 +1,23 @@
+{
+  "name": "challenge_2",
+  "version": "1.0.0",
+  "description": "CSV_Report App",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "node",
+    "npm"
+  ],
+  "author": "Andrew Myint",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "path": "^0.12.7",
+    "pug": "^2.0.3"
+  }
+}

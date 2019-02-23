@@ -1,0 +1,3 @@
+searching for how express.static is worked
+searching for what is static file
+searching for how to make get request from server
