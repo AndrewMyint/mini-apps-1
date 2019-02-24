@@ -5,8 +5,8 @@
   </head>
   <body>
     <h1>Hello from CSV REPORT</h1>
-    <form action="/upload_json" method="post">
-      <textarea type = "text" id = "json" name = "json"></textarea>
+    <form action="/upload_json" method="post" enctype = 'multipart/form-data'>
+      <input type = 'file' name = 'json'>
       <input type = "submit"  value = "Submit">
     </form>
   </body>

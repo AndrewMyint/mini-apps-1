@@ -5,12 +5,12 @@
   </head>
   <body>
     <h1>Hello from CSV REPORT</h1>
-    <form action="/upload_json" method="post">
-      <textarea type = "text" id = "json" name = "json"></textarea>
+    <form action="/upload_json" method="post" enctype = 'multipart/form-data'>
+      <input type = 'file' name = 'json'>
       <input type = "submit"  value = "Submit">
     </form>
 
-    <div id = "csv" style = "height: 50px; width: 30%"><p style = "white-space: pre-wrap;"><%= jason %><p></div>
+    <div id = "csv" style = "height: 50px; width: 30%"><p style = "white-space: pre-wrap;"><%= json %><p></div>
   </body>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src = 'app.js'></script>

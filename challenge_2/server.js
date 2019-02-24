@@ -1,33 +1,38 @@
 const express = require('express');
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const app = express();
 const path = require('path');
-const formatToCSV = require('./client/app.js');
-console.log(formatToCSV);
-// app.use((req, res, next) => {
-//   req.rawBody = '';
-//   // req.setEncoding('utf8');
-//   req.on('data', (chunk) => {
-//     req.rawBody += chunk;
-//  });
-//   req.on('end', function() {
-//     //  req.jsonBody = JSON.parse(req.rawBody);
-//      next();
-//    });
-// });
+const formatToCSV = require('./middleware/csvFormat.js');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' })
+const fs = require('fs');
+
+app.use(bodyParser.urlencoded());
 app.set('client', path.join(__dirname + '/client'));
 app.set('view engine', 'ejs');
 app.use('/',express.static(path.join(__dirname + '/client')));
-app.use(bodyParser.urlencoded());
-app.use(formatToCSV);
-// app.use(bodyParser.json());
 
-app.post('/upload_json', (req, res, next) => {
+// app.use(formatToCSV);
+// app.use(bodyParser.json());
+app.get('/', (req, res) => {
+  res.render('/client/index.html');
+})
+app.post('/upload_json', upload.single('json'), (req, res) => {
   // req.body = req.body.json.slice(0, req.body.json.length - 1);
   // var temp = JSON.parse(req.body);
-  console.log('this is from upload_json******req.body ', req.body);
+  fs.readFile(req.file.path, 'utf8',(err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+    // req.body = req.body.json.slice(0, req.body.json.length - 1);
+    // var temp = JSON.parse(req.body);
+      var csv = formatToCSV(data);
+      // console.log('data********',csv);
+      res.render('index', {json: csv})
+    }
+  })
   // res.render('/client/index');
-  res.render('index', {jason: req.body});
+  // res.render('index', {jason: req.body});
   // res.send(`<p>${req.rawBody.json}<p>`);
 
 })
