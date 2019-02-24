@@ -2,7 +2,8 @@ const express = require('express');
 var bodyParser = require('body-parser');
 const app = express();
 const path = require('path');
-
+const formatToCSV = require('./client/app.js');
+console.log(formatToCSV);
 // app.use((req, res, next) => {
 //   req.rawBody = '';
 //   // req.setEncoding('utf8');
@@ -18,13 +19,15 @@ app.set('client', path.join(__dirname + '/client'));
 app.set('view engine', 'ejs');
 app.use('/',express.static(path.join(__dirname + '/client')));
 app.use(bodyParser.urlencoded());
+app.use(formatToCSV);
 // app.use(bodyParser.json());
 
-app.post('/upload_json', (req, res) => {
-  var temp = JSON.parse(req.body.json);
-  console.log('this is from upload_json******req.body ', temp);
+app.post('/upload_json', (req, res, next) => {
+  // req.body = req.body.json.slice(0, req.body.json.length - 1);
+  // var temp = JSON.parse(req.body);
+  console.log('this is from upload_json******req.body ', req.body);
   // res.render('/client/index');
-  res.render('index', {jason: temp});
+  res.render('index', {jason: req.body});
   // res.send(`<p>${req.rawBody.json}<p>`);
 
 })

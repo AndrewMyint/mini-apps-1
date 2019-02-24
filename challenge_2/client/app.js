@@ -1,6 +1,6 @@
 
 console.log("Hello from app.js")
-var connection = new XMLHttpRequest();
+// var connection = new XMLHttpRequest();
 
 // connection.open('GET', 'http://localhost:3000/hello', true);
 // connection.open('POST','http://localhost:3000/hello',true);
@@ -19,7 +19,37 @@ var connection = new XMLHttpRequest();
 //     console.log("Hello from readystateChange", connection.response);
 //   }
 // }
+var helperFunction = function(json) {
 
+  var keys = Object.keys(json).slice(0, 6);
+  var valueArray = [];
+  keys.forEach((val) => {
+     valueArray.push(json[val]);
+  })
+   var str = valueArray.join() + '\n';
+  if (json.children.length > 0) {
+      for (var i = 0; i < json.children.length; i++) {
+         str += helperFunction(json.children[i]);
+    }
+    return str;
+  } else {
+      return str;
+  }
+}
+var formatToCSV =  (req, res, next) => {
+  if (req && Object.keys(req.body).length > 0) {
+    console.log(req.body);
+    req.body = req.body.json.slice(0, req.body.json.length - 1);
+    var temp = JSON.parse(req.body);
+    var keys = Object.keys(temp).slice(0, 6);
+    var str = keys.join() + '\n';
+    str += helperFunction(temp);
+    req.body = str;
+     next();
+  }
+   next();
+}
+module.exports = formatToCSV;
 /*
 
 The server must flatten the JSON hierarchy,

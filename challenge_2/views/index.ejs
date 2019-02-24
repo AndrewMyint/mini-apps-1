@@ -7,10 +7,10 @@
     <h1>Hello from CSV REPORT</h1>
     <form action="/upload_json" method="post">
       <textarea type = "text" id = "json" name = "json"></textarea>
-      <input type = "submit"  value = "SubmitInfo">
+      <input type = "submit"  value = "Submit">
     </form>
 
-    <p><%= jason %></p>
+    <div id = "csv" style = "height: 50px; width: 30%"><p style = "white-space: pre-wrap;"><%= jason %><p></div>
   </body>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src = 'app.js'></script>
