@@ -6,37 +6,39 @@ const formatToCSV = require('./middleware/csvFormat.js');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' })
 const fs = require('fs');
-
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.text());
+// app.use(bodyParser.urlencoded({extended: true}));
 app.set('client', path.join(__dirname + '/client'));
+//set the view engine to ejs so that don't need to type for extension
+// res.render() will loock in a view folder for the view
 app.set('view engine', 'ejs');
 app.use('/',express.static(path.join(__dirname + '/client')));
-
-// app.use(formatToCSV);
-// app.use(bodyParser.json());
 app.get('/', (req, res) => {
   res.render('/client/index.html');
 })
-app.post('/upload_json', upload.single('json'), (req, res) => {
+// below is post request for file type input
+// app.post('/upload_json', upload.single('json'), (req, res) => {
+//   // req.body = req.body.json.slice(0, req.body.json.length - 1);
+//   // var temp = JSON.parse(req.body);
+//   fs.readFile(req.file.path, 'utf8',(err, data) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//     // req.body = req.body.json.slice(0, req.body.json.length - 1);
+//     // var temp = JSON.parse(req.body);
+//       var csv = formatToCSV(data);
+//       res.render('index', {json: csv})
+//     }
+//   })
+// })
+app.post('/upload_json', (req, res) => {
   // req.body = req.body.json.slice(0, req.body.json.length - 1);
   // var temp = JSON.parse(req.body);
-  fs.readFile(req.file.path, 'utf8',(err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-    // req.body = req.body.json.slice(0, req.body.json.length - 1);
-    // var temp = JSON.parse(req.body);
-      var csv = formatToCSV(data);
-      // console.log('data********',csv);
-      res.render('index', {json: csv})
-    }
-  })
-  // res.render('/client/index');
-  // res.render('index', {jason: req.body});
-  // res.send(`<p>${req.rawBody.json}<p>`);
-
+ var csv = formatToCSV(req.body);
+  res.render('index', {json: csv});
+//  res.send(csv);
+//  res.end();
 })
-
 
 // app.post('/hello', (req, res) => {
 //   console.log('This is from /hello request********* req.body', req.rawBody.json);
