@@ -14,25 +14,38 @@ app.set('client', path.join(__dirname + '/client'));
 // res.render() will loock in a view folder for the view
 app.set('view engine', 'ejs');
 app.use('/',express.static(path.join(__dirname + '/client')));
+
+// app.use(formatToCSV);
+// app.use(bodyParser.json());
+var downloadPath;
 app.get('/', (req, res) => {
   res.render('/client/index.html');
 })
-// below is post request for file type input
-app.post('/upload_json', (req, res) => {
-  console.log('inside server post', req.file, req.body);
+app.get('/upload_json', (req, res) => {
+  var filePath = __dirname + '/' + downloadPath;
+  console.log(filePath);
+  res.download(filePath);
+})
+app.post('/upload_json', upload.single('json'), (req, res) => {
   // req.body = req.body.json.slice(0, req.body.json.length - 1);
   // var temp = JSON.parse(req.body);
-  // fs.readFile(req.body, 'utf8',(err, data) => {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //   // req.body = req.body.json.slice(0, req.body.json.length - 1);
-  //   // var temp = JSON.parse(req.body);
-  //   console.log(data);
-  //     // var csv = formatToCSV(data);
-  //     // res.render('index', {json: csv})
-  //   }
-  // })
+  // console.log(req.file);
+  fs.readFile(req.file.path, 'utf8',(err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+    // req.body = req.body.json.slice(0, req.body.json.length - 1);
+    // var temp = JSON.parse(req.body);
+      downloadPath = req.file.path;
+      var csv = formatToCSV(data);
+      // console.log('data********',csv);
+      res.render('index', {json: csv})
+    }
+  })
+  // res.render('/client/index');
+  // res.render('index', {jason: req.body});
+  // res.send(`<p>${req.rawBody.json}<p>`);
+
 })
 
 // ****** below is accepting value from textarea with ajax request

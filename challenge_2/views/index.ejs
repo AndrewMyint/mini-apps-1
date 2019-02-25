@@ -9,11 +9,10 @@
       <input type = 'file' name = 'json'>
       <input type = "submit"  value = "Submit">
     </form>
-    <div id = "csv" style = "height: 50px; width: 30%"><p style = "white-space: pre-wrap;"><%= json %><p></div>
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.js"
-      integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-      crossorigin="anonymous"></script>
-      <script src = 'app.js'></script>
+
+    <div id = "csv" style = "position: relative; height: 50px; width: 30%"><p style = "white-space: pre-wrap;"><%= json %><p>
+      <a href = "" class = 'download' style = "position: absolute" download>download</a>
+    </div>
+
   </body>
 </html>
