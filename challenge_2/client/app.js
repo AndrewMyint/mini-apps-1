@@ -9,7 +9,9 @@ $(document).ready(function(){
       dataType: 'html',
       contentType: 'text/plain',
       success : function(html) {
+         console.log(html)
         $('body').html(html);
+        // chaning the url
         window.history.pushState("object or string", "Title", "/upload_json")
       }
     })

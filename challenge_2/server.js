@@ -6,6 +6,7 @@ const formatToCSV = require('./middleware/csvFormat.js');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' })
 const fs = require('fs');
+const ejs = require('ejs');
 app.use(bodyParser.text());
 // app.use(bodyParser.urlencoded({extended: true}));
 app.set('client', path.join(__dirname + '/client'));
@@ -35,8 +36,10 @@ app.post('/upload_json', (req, res) => {
   // req.body = req.body.json.slice(0, req.body.json.length - 1);
   // var temp = JSON.parse(req.body);
  var csv = formatToCSV(req.body);
+ var str;
   res.render('index', {json: csv});
-//  res.send(csv);
+  // str = ejs.render(csv, 'index', {json: csv});
+
 //  res.end();
 })
 
