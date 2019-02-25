@@ -14,18 +14,26 @@ app.use('/',express.static(path.join(__dirname + '/client')));
 
 // app.use(formatToCSV);
 // app.use(bodyParser.json());
+var downloadPath;
 app.get('/', (req, res) => {
   res.render('/client/index.html');
+})
+app.get('/upload_json', (req, res) => {
+  var filePath = __dirname + '/' + downloadPath;
+  console.log(filePath);
+  res.download(filePath);
 })
 app.post('/upload_json', upload.single('json'), (req, res) => {
   // req.body = req.body.json.slice(0, req.body.json.length - 1);
   // var temp = JSON.parse(req.body);
+  // console.log(req.file);
   fs.readFile(req.file.path, 'utf8',(err, data) => {
     if (err) {
       console.log(err);
     } else {
     // req.body = req.body.json.slice(0, req.body.json.length - 1);
     // var temp = JSON.parse(req.body);
+      downloadPath = req.file.path;
       var csv = formatToCSV(data);
       // console.log('data********',csv);
       res.render('index', {json: csv})
