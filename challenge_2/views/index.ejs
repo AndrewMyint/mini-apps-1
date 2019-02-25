@@ -5,9 +5,9 @@
   </head>
   <body>
     <h1>Hello from CSV REPORT</h1>
-    <form>
-      <textarea id = 'textarea' name= 'json' rows = 10 cols = '40'></textarea>
-      <input type = "submit"  class = 'submit' value = "Submit">
+    <form enctype = 'multipart/form-data' >
+      <input type = 'file' name = 'json'>
+      <input type = "submit"  value = "Submit">
     </form>
     <div id = "csv" style = "height: 50px; width: 30%"><p style = "white-space: pre-wrap;"><%= json %><p></div>
     <script
