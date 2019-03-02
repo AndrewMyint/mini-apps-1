@@ -1,20 +1,30 @@
+// import db from '../db/index.js'
+// import React from 'react';
+// console.log(React);
 var F1 = (prop) => {
   if (prop.bol) {
     console.log("Hello from F1 ", prop)
     return (
-      <form action="">
+      <form id='target' action="/create/f1" method="post" onSubmit={(e) => {
+        e.preventDefault();
+        // console.log(e.target.length)
+        prop.postLoginData(e.target, prop, "/create/f1");
+        prop.handleForm(prop);
+      }
+      }>
         <div>
           <label>username</label>
           <input type="text" name='username' className="username" required />
         </div>
         <div>
-          <label>passowrd</label>
-          <input type="text" name='passowrd' className="password" required />
+          <label>passoword</label>
+          <input type="text" name='password' className="password" required />
         </div>
-        <input type="submit" name="submit" value="Login" onClick={() => { prop.handleForm(prop)}} />
+        <input type="submit" name="submit" />
       </form>
     );
   } else {
+    // onSubmit={(e)=>{console.log("submmitingg")}}
     return null;
   }
 
@@ -22,7 +32,13 @@ var F1 = (prop) => {
 var F2 = (prop) => {
   if (prop.bol) {
     return (
-      <form>
+      <form id='target1' action='/create/f2' method='post' onSubmit={(e) => {
+        e.preventDefault();
+        // console.log(e.target.length)
+        prop.postAddressData(e.target, prop, '/create/f2');
+        prop.handleForm(prop);
+      }
+      }>
         <div>
           <label>Line1</label>
           <input type="text" name='line1' className='line1' />
@@ -31,18 +47,18 @@ var F2 = (prop) => {
           <input type="text" name='line2' className='line2' />
 
           <label>City</label>
-          <input type="text" name='city' className='city' />
+          <input type="text" name='City' className='city' />
 
           <label>State</label>
-          <input type="text" name='state' className='state' />
+          <input type="text" name='StateName' className='state' />
 
           <label>zipcode</label>
-          <input type="text" name='zipcode' className='zipcode' />
+          <input type="text" name='ZipCode' className='zipcode' />
 
           <label>Phone Number</label>
-          <input type="text" name='phoneNumber' className='phoneNumber' />
+          <input type="text" name='PhoneNo' className='phoneNumber' />
 
-          <input type="submit" name='submit' value='next' onClick={() => { prop.handleForm(prop)}} />
+          <input type="submit" name='submit' value='next'/>
         </div>
       </form>
     );
@@ -53,9 +69,15 @@ var F2 = (prop) => {
 var F3 = (prop) => {
   if (prop.bol) {
     return (
-      <form>
+      <form id='target2' action='/create/f3' method='post' onSubmit={(e) => {
+        e.preventDefault();
+        // console.log(e.target.length)
+        prop.postCreditCardData(e.target, prop, '/create/f3');
+        prop.handleForm(prop);
+      }
+      }>
         <label>Credit Card</label>
-        <input type="text" name='creditCard' className='creditCard' />
+        <input type="text" name='cardNumber' className='creditCard' />
 
         <label>Expiry date</label>
         <input type="text" name='expiryDate' className='expiryDate' />
@@ -64,15 +86,16 @@ var F3 = (prop) => {
         <input type="text" name='cvv' className='cvv' />
 
         <label>Billing Zip Code</label>
-        <input type="text" name='zipCode' className='zipCode' />
+        <input type="text" name='billingZipCode' className='zipCode' />
 
-        <input type="submit" value="purchase" name='submit' onClick={() => { prop.handleForm(prop)}}/>
+        <input type="submit" value="purchase" name='submit'/>
       </form>
     )
   } else {
     return null;
   }
 }
+
 
 class App extends React.Component {
   constructor(props) {
@@ -83,15 +106,18 @@ class App extends React.Component {
       f2: false,
       f3: false
     }
-    this.formName = "checkout"
+    this.form = { formName: 'checkout' }
+
+
   }
   // componentWillMount() {
   //   this.setState({
   //     checkout: true
   //   })
   // }
+
   handleForm(prop) {
-    console.log('inside handleForm, ',this.formName);
+    console.log('inside handleForm, ', this.formName);
     if (prop.formName === "checkout") {
       console.log('inside checkout')
       this.setState({
@@ -128,18 +154,67 @@ class App extends React.Component {
       })
     }
   }
+
+  postData(data, url) {
+    $.ajax({
+      url: url,
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+      success: function (err, data) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log('***************inside succuess')
+          // this.setState(
+          //   {f2 : true}
+          // );
+        }
+      }
+    })
+  }
+  postLoginData(target, prop, url) {
+    var userLogin = {}
+    for (var i = 0; i < target.length - 1; i++) {
+      userLogin[target[i].name] = target[i].value;
+    }
+    prop.postData(userLogin, url);
+  }
+
+
+  postAddressData(target, prop, url) {
+    var address = {}
+    for (var i = 0; i < target.length - 1; i++) {
+      address[target[i].name] = target[i].value;
+    }
+    prop.postData(address, url);
+  }
+
+  postCreditCardData(target, prop, url) {
+    var creditcard = {}
+    for (var i = 0; i < target.length - 1; i++) {
+      creditcard[target[i].name] = target[i].value;
+    }
+    prop.postData(creditcard, url);
+  }
+
   render() {
     console.log('this.state.checkout', this.state.checkout)
     if (this.state.checkout) {
       return (<div>
-        <button onClick={this.handleForm.bind(this, this)} className='checkoutBtn'>checkout</button>
+        <button onClick={this.handleForm.bind(this, this.form)} className='checkoutBtn'>checkout</button>
       </div>)
     } else {
       return (
         <div>
-          <div> <F1 formName={"f1"} bol={this.state.f1} handleForm={this.handleForm.bind(this)} /></div>
-          <div> <F2 formName={"f2"} bol={this.state.f2} handleForm={this.handleForm.bind(this)} /></div>
-          <div> <F3 formName={"f3"} bol={this.state.f3} handleForm={this.handleForm.bind(this)} /></div>
+          <div> <F1 formName={"f1"} bol={this.state.f1} handleForm={this.handleForm.bind(this)}
+            postLoginData={this.postLoginData} postData={this.postData.bind(this)} /></div>
+
+          <div> <F2 formName={"f2"} bol={this.state.f2} handleForm={this.handleForm.bind(this)}
+            postAddressData={this.postAddressData} postData={this.postData.bind(this)} /></div>
+
+          <div> <F3 formName={"f3"} bol={this.state.f3} handleForm={this.handleForm.bind(this)}
+            postCreditCardData={this.postCreditCardData} postData={this.postData.bind(this)} /></div>
         </div>
       )
     }
@@ -151,3 +226,15 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+// $( "#target" ).submit(function( event ) {
+//   var userLogin = {
+//     username: $('.username').value(),
+//     password: $('.password').value()
+//   }
+//   $.ajax({
+//     url: '/create/f1',
+//     type: 'POST',
+//     contentType: 'application/json',
+//     data: userLogin
+//   })
+// });
